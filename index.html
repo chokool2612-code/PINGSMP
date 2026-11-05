@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PingSMP Donate</title>
+<style>
+  :root{--bg:#0f1220;--card:#181c30;--line:#2a3050;--text:#eef0fa;--mute:#9aa3c7;--gold:#f5c542;--green:#3ddc97;--red:#ff6b6b}
+  @media (prefers-color-scheme: light){:root{--bg:#f4f5fb;--card:#fff;--line:#dfe3f2;--text:#1b2038;--mute:#5c6585;--gold:#c98f00;--green:#12935f;--red:#d93d3d}}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,"Noto Sans Thai",sans-serif;line-height:1.55}
+  main{max-width:560px;margin:0 auto;padding:24px 16px 48px}
+  h1{font-size:28px;margin:8px 0 4px}
+  .sub{color:var(--mute);margin:0 0 20px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:16px}
+  h2{font-size:17px;margin:0 0 10px}
+  ol{margin:0;padding-left:20px} li{margin:6px 0}
+  .phone{font-size:26px;font-weight:700;color:var(--gold);letter-spacing:1px}
+  label{display:block;font-size:14px;color:var(--mute);margin:12px 0 6px}
+  input{width:100%;padding:13px 14px;border-radius:12px;border:1px solid var(--line);background:transparent;color:var(--text);font-size:16px}
+  input:focus{outline:2px solid var(--gold);outline-offset:1px}
+  button{width:100%;margin-top:16px;padding:14px;border:0;border-radius:12px;background:var(--gold);color:#1b1500;font-size:17px;font-weight:700;cursor:pointer}
+  button:disabled{opacity:.6;cursor:wait}
+  #msg,#smsg{margin-top:14px;padding:12px;border-radius:12px;display:none;font-weight:600}
+  #msg.ok,#smsg.ok{display:block;background:color-mix(in srgb,var(--green) 18%,transparent);color:var(--green)}
+  #msg.err,#smsg.err{display:block;background:color-mix(in srgb,var(--red) 18%,transparent);color:var(--red)}
+  table{width:100%;border-collapse:collapse;font-size:14px} td,th{padding:7px 4px;text-align:left;border-bottom:1px solid var(--line)} th{color:var(--mute);font-weight:500}
+  .wall div{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--line);font-size:15px}
+  .wall span:last-child{color:var(--gold);font-weight:600}
+  small{color:var(--mute)}
+</style>
+</head>
+<body>
+<main>
+  <h1>💖 PingSMP Donate</h1>
+  <p class="sub">โดเนทด้วยพร้อมเพย์/ซองอั่งเปา TrueMoney รับ <span id="coin">PingCoin</span> ในเกมทันที</p>
+
+  <div class="card">
+    <h2>วิธีโดเนท</h2>
+    <ol>
+      <li>เปิดแอป TrueMoney → เลือก <b>ซองของขวัญ</b> → สร้างซอง ใส่ยอดที่ต้องการ</li>
+      <li>ตั้งจำนวนผู้รับเป็น <b>1 คน</b> แล้วคัดลอกลิงก์ซอง</li>
+      <li>ใส่ชื่อในเกมกับลิงก์ด้านล่าง แล้วกดส่ง</li>
+      <li>เข้าเกมไปรับ <span class="c2">PingCoin</span> ที่ <b>!coin</b> ในแชท</li>
+    </ol>
+  </div>
+
+  <form class="card" id="sf" style="display:none">
+    <h2>วิธีที่ 1: โอนพร้อมเพย์ + ส่งสลิป</h2>
+    <small>โอนเข้า PromptPay / TrueMoney เบอร์ <b class="ph">…</b> แล้วอัปโหลดสลิปที่นี่ ระบบตรวจสอบกับธนาคารให้อัตโนมัติ</small>
+    <label for="sp">ชื่อในเกม (ตรงตามตัวอักษร)</label>
+    <input id="sp" autocomplete="off" maxlength="32" required placeholder="เช่น Steve123">
+    <label for="sfile">รูปสลิป (ต้องเห็น QR ชัดเจน, ไม่เกิน 4 MB)</label>
+    <input id="sfile" type="file" accept="image/*" required>
+    <button id="sb">ส่งสลิป</button>
+    <div id="smsg" role="status"></div>
+  </form>
+
+  <form class="card" id="f">
+    <h2 id="angtitle">ส่งซองอั่งเปา</h2>
+    <small>ซองจะถูกรับเข้าเบอร์ <b id="phone">…</b></small>
+    <label for="p">ชื่อในเกม (ตรงตามตัวอักษร)</label>
+    <input id="p" autocomplete="off" maxlength="32" required placeholder="เช่น Steve123">
+    <label for="l">ลิงก์ซองอั่งเปา</label>
+    <input id="l" autocomplete="off" required placeholder="https://gift.truemoney.com/campaign/?v=...">
+    <button id="b">ส่งซอง</button>
+    <div id="msg" role="status"></div>
+  </form>
+
+  <div class="card">
+    <h2>อัตราและโบนัส</h2>
+    <table id="rates"><tr><th>ยอดโดเนท</th><th>ได้รับ</th></tr></table>
+  </div>
+
+  <div class="card">
+    <h2>ผู้ใจดีล่าสุด</h2>
+    <div class="wall" id="wall"><small>ยังไม่มีข้อมูล</small></div>
+  </div>
+  <small>ซองอั่งเปาที่แลกแล้วไม่สามารถขอคืนได้ ตรวจสอบชื่อในเกมให้ถูกต้องก่อนส่ง</small>
+</main>
+<script>
+const $ = (id) => document.getElementById(id);
+const ERR = { DUPLICATE:"สลิปนี้ถูกใช้ไปแล้ว", WRONG_RECEIVER:"สลิปนี้ไม่ได้โอนเข้าบัญชีของเซิร์ฟเวอร์", SLIP_TOO_OLD:"สลิปเก่าเกินไป", AMOUNT_TOO_LOW:"ยอดต่ำกว่าขั้นต่ำ", SLIP_NOT_FOUND:"อ่าน QR บนสลิปไม่เจอ ลองถ่ายให้ชัดขึ้น", SLIP_PENDING:"สลิปยังไม่พร้อมตรวจ รอ 5 นาทีแล้วลองใหม่", INVALID_IMAGE_FORMAT:"ไฟล์ไม่ใช่รูปภาพ", IMAGE_SIZE_TOO_LARGE:"รูปใหญ่เกิน 4 MB", UNREADABLE:"อ่านข้อมูลสลิปไม่ได้", NOT_CONFIGURED:"ระบบสลิปยังไม่เปิดใช้งาน", ALREADY_REDEEMED:"ซองนี้ถูกใช้ไปแล้ว", VOUCHER_NOT_FOUND:"ไม่พบซองนี้", VOUCHER_EXPIRED:"ซองหมดอายุแล้ว", VOUCHER_OUT_OF_STOCK:"ซองถูกรับครบแล้ว",
+  TARGET_USER_REDEEMED:"ซองนี้ถูกรับไปแล้ว", CANNOT_GET_OWN_VOUCHER:"รับซองของตัวเองไม่ได้", BAD_LINK:"ลิงก์ซองไม่ถูกต้อง", BAD_PLAYER:"ชื่อในเกมไม่ถูกต้อง",
+  TOO_FAST:"ส่งเร็วเกินไป กรุณารอสักครู่", UNKNOWN_CHECK_ADMIN:"ตรวจสอบไม่สำเร็จ กรุณาติดต่อแอดมินพร้อมลิงก์ซอง" };
+const fmt = (n) => Number(n).toLocaleString("th-TH");
+let INFO = { rate: 1, bonus: [] };
+const coinsFor = (b) => { const x = [...INFO.bonus].filter((y) => b >= y.min).sort((a, c) => c.min - a.min)[0]; return Math.floor(b * INFO.rate * (1 + (x ? x.pct : 0) / 100)); };
+async function load(){
+  try{
+    INFO = await (await fetch("/info")).json();
+    $("phone").textContent = INFO.phone; document.querySelectorAll(".ph").forEach((e) => e.textContent = INFO.phone); if (INFO.slip) { $("sf").style.display = ""; $("angtitle").textContent = "วิธีที่ 2: ส่งซองอั่งเปา"; } $("coin").textContent = INFO.coin;
+    document.querySelectorAll(".c2").forEach((e) => e.textContent = INFO.coin);
+    const rows = [20, 50, 100, 500, 1000].map((b) => `<tr><td>${fmt(b)} บาท</td><td>${fmt(coinsFor(b))} ${INFO.coin}</td></tr>`).join("");
+    $("rates").insertAdjacentHTML("beforeend", rows);
+    const w = $("wall"); if (INFO.wall.length) { w.innerHTML = ""; for (const x of INFO.wall) { const d = document.createElement("div"); const a = document.createElement("span"); a.textContent = x.player; const b = document.createElement("span"); b.textContent = fmt(x.amount) + " บาท"; d.append(a, b); w.append(d); } }
+  }catch{}
+}
+$("f").addEventListener("submit", async (e) => {
+  e.preventDefault(); const m = $("msg"), b = $("b"); m.className = ""; b.disabled = true; b.textContent = "กำลังตรวจสอบซอง...";
+  try{
+    const r = await fetch("/web/redeem", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ player: $("p").value.trim(), link: $("l").value.trim() }) });
+    const d = await r.json();
+    if (d.ok){ m.className = "ok"; m.textContent = `สำเร็จ! ได้รับ ${fmt(coinsFor(d.amount))} ${INFO.coin} (ยอด ${fmt(d.amount)} บาท) — เข้าเกมแล้วพิมพ์ !coin ขอบคุณที่สนับสนุน ❤`; $("l").value = ""; load(); }
+    else { m.className = "err"; m.textContent = ERR[d.error] || ("ไม่สำเร็จ (" + d.error + ")"); }
+  }catch{ m.className = "err"; m.textContent = "เชื่อมต่อระบบไม่ได้ ลองใหม่อีกครั้ง"; }
+  b.disabled = false; b.textContent = "ส่งซอง";
+});
+$("sf").addEventListener("submit", async (e) => {
+  e.preventDefault(); const m = $("smsg"), b = $("sb"), f = $("sfile").files[0]; m.className = "";
+  if (!f) return; if (f.size > 4 * 1024 * 1024) { m.className = "err"; m.textContent = ERR.IMAGE_SIZE_TOO_LARGE; return; }
+  b.disabled = true; b.textContent = "กำลังตรวจสอบสลิป...";
+  try{
+    const data = await new Promise((ok, no) => { const r = new FileReader(); r.onload = () => ok(String(r.result).split(",")[1]); r.onerror = no; r.readAsDataURL(f); });
+    const r = await fetch("/web/slip", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ player: $("sp").value.trim(), image: data }) });
+    const d = await r.json();
+    if (d.ok){ m.className = "ok"; m.textContent = `สำเร็จ! ได้รับ ${fmt(coinsFor(d.amount))} ${INFO.coin} (ยอด ${fmt(d.amount)} บาท) — เข้าเกมแล้วพิมพ์ !coin ขอบคุณที่สนับสนุน ❤`; $("sfile").value = ""; load(); }
+    else { m.className = "err"; m.textContent = ERR[d.error] || ("ไม่สำเร็จ (" + d.error + ")"); }
+  }catch{ m.className = "err"; m.textContent = "เชื่อมต่อระบบไม่ได้ ลองใหม่อีกครั้ง"; }
+  b.disabled = false; b.textContent = "ส่งสลิป";
+});
+load();
+</script>
+</body>
+</html>

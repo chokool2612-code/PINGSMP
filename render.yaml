@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: pingsmp-donate
+    runtime: node
+    plan: free
+    startCommand: node server.js
+    envVars:
+      - key: API_KEY
+        generateValue: true
+      - key: DISCORD_WEBHOOK
+        sync: false
