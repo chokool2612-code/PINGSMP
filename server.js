@@ -86,7 +86,7 @@ http.createServer(async (req, res) => {
   const url = new URL(req.url, "http://x");
   const authed = req.headers["x-api-key"] === cfg.apiKey;
   try {
-    if (req.method === "GET" && (url.pathname === "/" || url.pathname === "/index.html")) { res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" }); return res.end(fs.readFileSync(path.join(__dirname, "public", "index.html"))); }
+    if (req.method === "GET" && (url.pathname === "/" || url.pathname === "/index.html")) { res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" }); const a = path.join(__dirname, "public", "index.html"), b = path.join(__dirname, "index.html"); return res.end(fs.readFileSync(fs.existsSync(a) ? a : b)); }
     if (req.method === "GET" && url.pathname === "/info") {
       const wall = Object.values(redeemed).filter((x) => x.status === "ok").sort((a, b) => b.at - a.at).slice(0, 10).map((x) => ({ player: x.player, amount: x.amount, at: x.at }));
       return send(res, 200, { phone: cfg.displayPhone, coin: cfg.coinName, rate: cfg.rate, bonus: cfg.bonus, wall });
