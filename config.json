@@ -1,0 +1,26 @@
+{
+  "port": 8787,
+  "discordWebhook": "",
+  "truemoneyPhone": "0928876261",
+  "displayPhone": "092-887-6261",
+  "coinName": "PingCoin",
+  "rate": 1,
+  "bonus": [
+    {
+      "min": 100,
+      "pct": 5
+    },
+    {
+      "min": 500,
+      "pct": 10
+    },
+    {
+      "min": 1000,
+      "pct": 15
+    }
+  ],
+  "apiKey": "SET_VIA_ENV",
+  "webhookSecret": "CHANGE_ME_WEBHOOK_SECRET",
+  "playerFrom": "message",
+  "expireHours": 72
+}
