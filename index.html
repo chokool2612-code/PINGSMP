@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PingSMP Donate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0613; --panel:#171027; --panel2:#201536; --edge:#06030c; --hi:#3a2760; --lo:#0f0919;
+    --purple:#a855f7; --purple2:#7c3aed; --violet:#c4a1ff; --text:#f1eaff; --mute:#a99bc9;
+    --green:#55ff7f; --red:#ff6b6b; --gold:#ffd23f;
+  }
+  *{box-sizing:border-box}
+  html{background:var(--bg)}
+  body{margin:0;color:var(--text);font-family:"Sarabun",system-ui,sans-serif;line-height:1.55;min-height:100vh;
+    background:
+      radial-gradient(900px 500px at 50% -10%, rgba(124,58,237,.35), transparent 60%),
+      linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px) 0 0/32px 32px,
+      linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px) 0 0/32px 32px,
+      var(--bg);}
+  .px{font-family:"Press Start 2P","Sarabun",monospace;letter-spacing:.5px}
+  main{max-width:600px;margin:0 auto;padding:20px 16px 56px;position:relative;z-index:1}
+
+  /* ---- กล่องสไตล์บล็อกมายคราฟ ---- */
+  .box{background:var(--panel);border:4px solid var(--edge);margin:0 0 18px;padding:18px;position:relative;
+    box-shadow:inset 4px 4px 0 var(--hi), inset -4px -4px 0 var(--lo), 0 6px 0 rgba(0,0,0,.5)}
+  h1{font-size:22px;line-height:1.5;margin:6px 0 6px;color:#fff;text-shadow:3px 3px 0 var(--purple2),6px 6px 0 #000}
+  h2{font-size:12px;line-height:1.7;margin:0 0 12px;color:var(--violet);text-shadow:2px 2px 0 #000}
+  .sub{color:var(--mute);margin:0 0 6px}
+  header{text-align:center;padding:18px 0 14px}
+  .logo{display:inline-grid;grid-template-columns:repeat(4,16px);grid-template-rows:repeat(4,16px);margin-bottom:6px;box-shadow:0 0 0 4px #000,0 0 28px rgba(168,85,247,.7)}
+  .logo i{display:block}
+  .logo i:nth-child(odd){background:#6d28d9}.logo i:nth-child(even){background:#8b5cf6}
+  .logo i:nth-child(3),.logo i:nth-child(8),.logo i:nth-child(9),.logo i:nth-child(14){background:#2e1065}
+  .logo i:nth-child(6),.logo i:nth-child(11){background:#c4b5fd}
+
+  /* ---- แท็บ ---- */
+  .tabs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}
+  .tab{font:inherit;font-weight:700;font-size:15px;color:var(--text);background:#2a1d45;border:4px solid var(--edge);padding:12px 6px;cursor:pointer;
+    box-shadow:inset 3px 3px 0 #4a3578, inset -3px -3px 0 #160e27}
+  .tab[aria-selected="true"]{background:var(--purple2);box-shadow:inset 3px 3px 0 #b794ff, inset -3px -3px 0 #4c1d95, 0 0 18px rgba(168,85,247,.55)}
+  .tab:active{transform:translateY(2px)}
+  [hidden]{display:none!important}
+
+  /* ---- เบอร์รับเงิน ---- */
+  .phone{display:flex;align-items:center;justify-content:space-between;gap:10px;background:#0c0716;border:4px solid var(--edge);padding:12px 14px;
+    box-shadow:inset 3px 3px 0 #000, inset -3px -3px 0 #2a1d45}
+  .phone b{font-family:"Press Start 2P",monospace;font-size:15px;color:var(--gold);text-shadow:2px 2px 0 #000;word-break:break-all}
+  .copy{font:inherit;font-weight:700;font-size:13px;color:#fff;background:#3b2a63;border:3px solid var(--edge);padding:8px 12px;cursor:pointer;box-shadow:inset 2px 2px 0 #6b4fb0, inset -2px -2px 0 #1b1030}
+  ol{margin:12px 0 0;padding-left:22px} li{margin:6px 0}
+
+  /* ---- ฟอร์ม ---- */
+  label{display:block;font-size:14px;color:var(--mute);margin:14px 0 6px}
+  input[type=text]{width:100%;padding:13px 12px;border:4px solid var(--edge);background:#0c0716;color:var(--text);font:inherit;font-size:16px;
+    box-shadow:inset 3px 3px 0 #000, inset -3px -3px 0 #2a1d45}
+  input[type=text]:focus{outline:3px solid var(--purple);outline-offset:2px}
+  input[type=file]{width:100%;padding:10px;border:4px dashed #4a3578;background:#0c0716;color:var(--mute);font:inherit;font-size:14px}
+  .prev{display:block;max-width:100%;max-height:260px;margin:10px auto 0;border:4px solid var(--edge);image-rendering:auto}
+  .go{width:100%;margin-top:18px;padding:15px 10px;font-family:"Press Start 2P","Sarabun",monospace;font-size:13px;color:#fff;background:var(--purple2);cursor:pointer;
+    border:4px solid var(--edge);box-shadow:inset 4px 4px 0 #c4a1ff, inset -4px -4px 0 #4c1d95, 0 5px 0 rgba(0,0,0,.6);text-shadow:2px 2px 0 #2e1065}
+  .go:hover{background:var(--purple)} .go:active{transform:translateY(3px);box-shadow:inset 4px 4px 0 #c4a1ff, inset -4px -4px 0 #4c1d95}
+  .go:disabled{opacity:.6;cursor:wait}
+  .msg{margin-top:14px;padding:12px;border:4px solid var(--edge);font-weight:700;display:none}
+  .msg.ok{display:block;background:#0f2a1a;color:var(--green)}
+  .msg.err{display:block;background:#2e1015;color:var(--red)}
+  .note{font-size:13px;color:var(--mute);margin-top:10px}
+  .warn{background:#2b2108;border:4px solid var(--edge);color:var(--gold);padding:10px 12px;font-size:14px;margin-top:12px}
+
+  /* ---- ตาราง/กำแพง ---- */
+  table{width:100%;border-collapse:collapse;font-size:15px} td,th{padding:8px 6px;text-align:left;border-bottom:2px solid #2a1d45} th{color:var(--mute);font-weight:600}
+  td:last-child{color:var(--gold);font-weight:700}
+  .wall div{display:flex;justify-content:space-between;gap:10px;padding:8px 2px;border-bottom:2px solid #2a1d45}
+  .wall span:last-child{color:var(--gold);font-weight:700;white-space:nowrap}
+  small{color:var(--mute)}
+  footer{text-align:center;color:var(--mute);font-size:13px;margin-top:6px}
+
+  /* ---- อนุภาค ender ลอย ---- */
+  .sp{position:fixed;width:6px;height:6px;background:var(--purple);opacity:0;z-index:0;pointer-events:none;animation:fl 9s linear infinite}
+  @keyframes fl{0%{transform:translateY(0);opacity:0}15%{opacity:.8}100%{transform:translateY(-110vh);opacity:0}}
+  @media (prefers-reduced-motion:reduce){.sp{display:none}}
+  @media (max-width:380px){h1{font-size:18px}.phone b{font-size:13px}}
+</style>
+</head>
+<body>
+<script>for(let i=0;i<14;i++){const e=document.createElement('i');e.className='sp';e.style.left=(Math.random()*100)+'vw';e.style.bottom='-10px';e.style.animationDelay=(Math.random()*9)+'s';e.style.animationDuration=(7+Math.random()*7)+'s';e.style.background=i%3?'#a855f7':'#e9d5ff';document.body.appendChild(e)}</script>
+<main>
+  <header>
+    <div class="logo" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <h1 class="px">PINGSMP<br>DONATE</h1>
+    <p class="sub">โดเนทแล้วรับ <b class="coin">PingCoin</b> ในเกมทันที ❤</p>
+  </header>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" id="t1" aria-selected="true" aria-controls="p1">💸 โอนพร้อมเพย์ + สลิป</button>
+    <button class="tab" role="tab" id="t2" aria-selected="false" aria-controls="p2">🧧 ซองอั่งเปา</button>
+  </div>
+
+  <!-- ============ แท็บ 1: โอนพร้อมเพย์ + สลิป ============ -->
+  <section id="p1" role="tabpanel" aria-labelledby="t1">
+    <div class="box">
+      <h2 class="px">1. โอนเงิน</h2>
+      <div class="phone"><b id="phone">092-887-6261</b><button class="copy" id="copy" type="button">คัดลอก</button></div>
+      <p class="note">PromptPay / TrueMoney Wallet เบอร์ด้านบน ขั้นต่ำ <b id="minamt">10</b> บาท</p>
+    </div>
+
+    <form class="box" id="sf">
+      <h2 class="px">2. ส่งสลิป</h2>
+      <label for="sp">ชื่อในเกม (ตรงตามตัวอักษร)</label>
+      <input type="text" id="sp" autocomplete="off" maxlength="32" required placeholder="เช่น Steve123">
+      <label for="sfile">รูปสลิป (เห็น QR ชัดเจน ไม่เกิน 4 MB)</label>
+      <input type="file" id="sfile" accept="image/*" required>
+      <img id="prev" class="prev" alt="" hidden>
+      <button class="go" id="sb">ส่งสลิป</button>
+      <div class="msg" id="smsg" role="status"></div>
+      <div class="warn" id="slipoff" hidden>สลิปจะถูกส่งให้แอดมินตรวจสอบและเติม coin ให้ด้วยมือ (ไม่ใช่อัตโนมัติ)</div>
+    </form>
+  </section>
+
+  <!-- ============ แท็บ 2: ซองอั่งเปา ============ -->
+  <section id="p2" role="tabpanel" aria-labelledby="t2" hidden>
+    <div class="box">
+      <h2 class="px">วิธีทำ</h2>
+      <ol>
+        <li>แอป TrueMoney → <b>ซองของขวัญ</b> → สร้างซอง ใส่ยอด</li>
+        <li>ตั้งผู้รับเป็น <b>1 คน</b> แล้วคัดลอกลิงก์</li>
+        <li>วางลิงก์ด้านล่างพร้อมชื่อในเกม แอดมินจะรับซองแล้วเติม coin ให้</li>
+      </ol>
+    </div>
+    <form class="box" id="f">
+      <h2 class="px">ส่งซอง</h2>
+      <label for="p">ชื่อในเกม (ตรงตามตัวอักษร)</label>
+      <input type="text" id="p" autocomplete="off" maxlength="32" required placeholder="เช่น Steve123">
+      <label for="l">ลิงก์ซองอั่งเปา</label>
+      <input type="text" id="l" autocomplete="off" required placeholder="https://gift.truemoney.com/campaign/?v=...">
+      <button class="go" id="b">ส่งซอง</button>
+      <div class="msg" id="msg" role="status"></div>
+    </form>
+  </section>
+
+  <div class="box">
+    <h2 class="px">อัตรา &amp; โบนัส</h2>
+    <table id="rates"><tr><th>ยอดโดเนท</th><th>ได้รับ</th></tr></table>
+  </div>
+
+  <div class="box">
+    <h2 class="px">ผู้ใจดีล่าสุด</h2>
+    <div class="wall" id="wall"><small>ยังไม่มีข้อมูล</small></div>
+  </div>
+
+  <div class="box">
+    <h2 class="px">วิธีใช้ในเกม</h2>
+    <p style="margin:0">พิมพ์ <b>!coin</b> ในแชทเพื่อดูยอดและเปิดร้านค้า coin จะเข้าอัตโนมัติภายในไม่กี่วินาทีหลังระบบตรวจสอบผ่าน</p>
+  </div>
+  <footer>เงินที่โอนแล้วไม่สามารถขอคืนได้ ตรวจสอบชื่อในเกมให้ถูกต้องก่อนส่ง</footer>
+</main>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const ERR = { DUPLICATE:"สลิปนี้ถูกใช้ไปแล้ว", WRONG_RECEIVER:"สลิปนี้ไม่ได้โอนเข้าบัญชีของเซิร์ฟเวอร์", SLIP_TOO_OLD:"สลิปเก่าเกินไป", AMOUNT_TOO_LOW:"ยอดต่ำกว่าขั้นต่ำ", SLIP_NOT_FOUND:"อ่าน QR บนสลิปไม่เจอ ลองถ่ายให้ชัดขึ้น", SLIP_PENDING:"สลิปยังไม่พร้อมตรวจ รอ 5 นาทีแล้วลองใหม่", INVALID_IMAGE_FORMAT:"ไฟล์ไม่ใช่รูปภาพ", IMAGE_SIZE_TOO_LARGE:"รูปใหญ่เกิน 4 MB", UNREADABLE:"อ่านข้อมูลสลิปไม่ได้", NOT_CONFIGURED:"ระบบสลิปยังไม่เปิดใช้งาน",
+  ALREADY_REDEEMED:"ซองนี้ถูกใช้ไปแล้ว", VOUCHER_NOT_FOUND:"ไม่พบซองนี้", VOUCHER_EXPIRED:"ซองหมดอายุแล้ว", VOUCHER_OUT_OF_STOCK:"ซองถูกรับครบแล้ว",
+  TARGET_USER_REDEEMED:"ซองนี้ถูกรับไปแล้ว", CANNOT_GET_OWN_VOUCHER:"รับซองของตัวเองไม่ได้", BAD_LINK:"ลิงก์ซองไม่ถูกต้อง", BAD_PLAYER:"ชื่อในเกมไม่ถูกต้อง",
+  TOO_FAST:"ส่งเร็วเกินไป กรุณารอสักครู่", UNKNOWN_CHECK_ADMIN:"ตรวจสอบไม่สำเร็จ กรุณาติดต่อแอดมินพร้อมหลักฐาน" };
+const fmt = (n) => Number(n).toLocaleString("th-TH");
+let INFO = { rate: 1, bonus: [], coin: "PingCoin" };
+const coinsFor = (b) => { const x = [...INFO.bonus].filter((y) => b >= y.min).sort((a, c) => c.min - a.min)[0]; return Math.floor(b * INFO.rate * (1 + (x ? x.pct : 0) / 100)); };
+
+// แท็บ
+function tab(n){ for (const i of [1,2]) { $("t"+i).setAttribute("aria-selected", i===n); $("p"+i).hidden = i!==n; } }
+$("t1").onclick = () => tab(1); $("t2").onclick = () => tab(2);
+
+// คัดลอกเบอร์
+$("copy").onclick = async () => { try { await navigator.clipboard.writeText($("phone").textContent.replace(/\D/g, "")); $("copy").textContent = "คัดลอกแล้ว ✔"; setTimeout(() => $("copy").textContent = "คัดลอก", 1500); } catch { $("copy").textContent = "กดค้างที่เบอร์"; } };
+
+// พรีวิวสลิป
+$("sfile").onchange = () => { const f = $("sfile").files[0]; if (f) { $("prev").src = URL.createObjectURL(f); $("prev").hidden = false; } else $("prev").hidden = true; };
+
+async function load(){
+  try{
+    INFO = await (await fetch("/info")).json();
+    $("phone").textContent = INFO.phone || $("phone").textContent;
+    document.querySelectorAll(".coin").forEach((e) => e.textContent = INFO.coin);
+    $("slipoff").hidden = !!INFO.slip;
+    document.querySelectorAll("#rates tr:not(:first-child)").forEach((r) => r.remove());
+    $("rates").insertAdjacentHTML("beforeend", [20, 50, 100, 500, 1000].map((b) => `<tr><td>${fmt(b)} บาท</td><td>${fmt(coinsFor(b))} ${INFO.coin}</td></tr>`).join(""));
+    const w = $("wall"); if (INFO.wall && INFO.wall.length) { w.innerHTML = ""; for (const x of INFO.wall) { const d = document.createElement("div"); const a = document.createElement("span"); a.textContent = x.player; const b = document.createElement("span"); b.textContent = fmt(x.amount) + " บาท"; d.append(a, b); w.append(d); } }
+  }catch{}
+}
+
+function bind(formId, btnId, msgId, idleText, busyText, run){
+  $(formId).addEventListener("submit", async (e) => {
+    e.preventDefault(); const m = $(msgId), b = $(btnId); m.className = "msg"; b.disabled = true; b.textContent = busyText;
+    try{
+      const d = await run();
+      if (d.ok && d.pending){ m.className = "msg ok"; m.textContent = "ส่งข้อมูลแล้ว ✔ แอดมินจะตรวจสอบและเติม coin ให้ในไม่ช้า"; }
+      else if (d.ok){ m.className = "msg ok"; m.textContent = `สำเร็จ! ได้รับ ${fmt(coinsFor(d.amount))} ${INFO.coin} (ยอด ${fmt(d.amount)} บาท) — เข้าเกมแล้วพิมพ์ !coin ขอบคุณที่สนับสนุน ❤`; load(); }
+      else { m.className = "msg err"; m.textContent = ERR[d.error] || ("ไม่สำเร็จ (" + d.error + ")"); }
+    }catch{ m.className = "msg err"; m.textContent = "เชื่อมต่อระบบไม่ได้ ลองใหม่อีกครั้ง"; }
+    b.disabled = false; b.textContent = idleText;
+  });
+}
+const post = async (url, body) => (await fetch(url, { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify(body) })).json();
+
+bind("f", "b", "msg", "ส่งซอง", "กำลังตรวจสอบซอง...", async () => { const r = await post("/web/redeem", { player: $("p").value.trim(), link: $("l").value.trim() }); if (r.ok) $("l").value = ""; return r; });
+bind("sf", "sb", "smsg", "ส่งสลิป", "กำลังตรวจสอบสลิป...", async () => {
+  const f = $("sfile").files[0]; if (!f) return { ok:false, error:"INVALID_IMAGE_FORMAT" };
+  if (f.size > 4 * 1024 * 1024) return { ok:false, error:"IMAGE_SIZE_TOO_LARGE" };
+  const data = await new Promise((ok, no) => { const r = new FileReader(); r.onload = () => ok(String(r.result).split(",")[1]); r.onerror = no; r.readAsDataURL(f); });
+  const r = await post("/web/slip", { player: $("sp").value.trim(), image: data });
+  if (r.ok) { $("sfile").value = ""; $("prev").hidden = true; }
+  return r;
+});
+load();
+</script>
+</body>
+</html>
